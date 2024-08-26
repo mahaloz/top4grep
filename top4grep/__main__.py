@@ -53,15 +53,8 @@ def grep(keywords, abstract):
         constraints = [Paper.title.contains(x) for x in keywords]
         with Session() as session:
             papers = session.query(Paper).filter(*constraints).all()
-        #check whether whether nltk tokenizer data is downloaded
-        check_and_download_punkt()
-        #tokenize the title and filter out the substring matches
-        filter_paper = []
-        for paper in papers:
-            if all([stemmer.stem(x.lower()) in fuzzy_match(paper.title.lower()) for x in keywords]):
-                filter_paper.append(paper)
     # perform customized sorthing
-    papers = sorted(filter_paper, key=lambda paper: paper.year + CONFERENCES.index(paper.conference)/10, reverse=True)
+    papers = sorted(papers, key=lambda paper: paper.year + CONFERENCES.index(paper.conference)/10, reverse=True)
     return papers
 
 
